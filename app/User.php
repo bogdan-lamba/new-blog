@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Storage;
 use YoHang88\LetterAvatar\LetterAvatar;
 
 class User extends Authenticatable

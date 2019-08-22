@@ -11,9 +11,14 @@
 |
 */
 
+use App\Post;
+
 Route::get('/', function () {
-    return view('welcome');
+    //TODO: move to conroller
+    $posts = Post::orderBy('published_date', 'desc')->paginate(12);
+    return view('welcome', compact('posts'));
 })->name('welcome');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

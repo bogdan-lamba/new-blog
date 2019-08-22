@@ -27,4 +27,9 @@ class Post extends Model
     {
         return $this->belongsTo(Image::class);
     }
+
+    public function path()
+    {
+        return "/posts/{$this->id}";
+    }
 }
