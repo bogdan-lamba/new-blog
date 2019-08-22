@@ -75,6 +75,8 @@ class UserController extends Controller
                 ->except([$request->get('password') ? '' : 'password']
         ));
 
+        $user->generateAvatar();
+
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }
 
@@ -86,6 +88,7 @@ class UserController extends Controller
      */
     public function destroy(User  $user)
     {
+        $user->deleteAvatar();
         $user->delete();
 
         return redirect()->route('user.index')->withStatus(__('User successfully deleted.'));

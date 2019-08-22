@@ -39,16 +39,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * @param $role
+     * @return bool
+     */
     public function hasRole($role)
     {
         if ($this->role->name == $role)
@@ -59,10 +69,21 @@ class User extends Authenticatable
 
     public function generateAvatar()
     {
+        $this->deleteAvatar();
         $avatar = new LetterAvatar($this->name, 'circle', '40');
         $avatar->saveAs('storage/' . $this->id . '.png', LetterAvatar::MIME_TYPE_PNG);
     }
 
+    public function deleteAvatar()
+    {
+        $path = storage_path('/app/public/' . $this->id . '.png');
+        if(file_exists($path))
+            unlink($path);
+    }
+
+    /**
+     * @return string
+     */
     public function avatarPath()
     {
         return 'storage/' . $this->id . '.png';

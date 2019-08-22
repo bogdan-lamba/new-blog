@@ -1,6 +1,5 @@
 <?php
 
-use App\Post;
 use App\Tag;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Tag::class, 6)->create();
+        factory(Tag::class, 26)->create();
 
         //TODO: pivot seed with unique id pairs
         /*DB::table('post_tag')->insert([

@@ -28,6 +28,8 @@ class ProfileController extends Controller
     {
         auth()->user()->update($request->all());
 
+        auth()->user()->generateAvatar();
+
         return back()->withStatus(__('Profile successfully updated.'));
     }
 
