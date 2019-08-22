@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use YoHang88\LetterAvatar\LetterAvatar;
 
 class UsersTableSeeder extends Seeder
 {
@@ -21,5 +22,9 @@ class UsersTableSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+
+        $avatar = new LetterAvatar('Admin Admin', 'circle', '40');
+        $avatar->saveAs('storage/app/public/' . '1' . '.png', LetterAvatar::MIME_TYPE_PNG);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -39,10 +40,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $model)
     {
-        $model->create($request->merge([
+        $user = $model->create($request->merge([
             'password' => Hash::make($request->get('password')),
             'role_id' => Role::where('name','publisher')->value('id')
         ])->all());
+
+        event(new Registered($user));
 
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }

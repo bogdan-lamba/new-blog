@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
+use YoHang88\LetterAvatar\LetterAvatar;
 
 class User extends Authenticatable
 {
@@ -48,5 +50,16 @@ class User extends Authenticatable
             return true;
 
         return false;
+    }
+
+    public function generateAvatar()
+    {
+        $avatar = new LetterAvatar($this->name, 'circle', '40');
+        $avatar->saveAs('storage/' . $this->id . '.png', LetterAvatar::MIME_TYPE_PNG);
+    }
+
+    public function avatarPath()
+    {
+        return 'storage/' . $this->id . '.png';
     }
 }
