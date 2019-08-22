@@ -86,6 +86,6 @@ class User extends Authenticatable
      */
     public function avatarPath()
     {
-        return 'storage/' . $this->id . '.png';
+        return asset('storage/' . $this->id . '.png');
     }
 }
