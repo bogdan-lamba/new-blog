@@ -18,6 +18,11 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function owner()
+    {
+        return $this->user->name;
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);

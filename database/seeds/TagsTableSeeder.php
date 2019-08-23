@@ -12,7 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Tag::class, 26)->create();
+        factory(Tag::class, 10)->create();
 
         //TODO: pivot seed with unique id pairs
         /*DB::table('post_tag')->insert([
@@ -21,6 +21,51 @@ class TagsTableSeeder extends Seeder
                 'tag_id' => Tag::orderByRaw("RAND()")->value('id')
             ],
         ]);*/
+
+        //temp
+        DB::table('post_tag')->insert([
+            [
+                'post_id' => '1',
+                'tag_id' => '1',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '2',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '3',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '4',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '5',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '6',
+            ],
+            [
+                'post_id' => '1',
+                'tag_id' => '7',
+            ],
+            [
+                'post_id' => '2',
+                'tag_id' => '5',
+            ],
+            [
+                'post_id' => '2',
+                'tag_id' => '6',
+            ],
+            [
+                'post_id' => '2',
+                'tag_id' => '7',
+            ],
+
+        ]);
 
     }
 }

@@ -34,7 +34,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-posts', function($user) {
-            return $user->hasRole('admin');
+            return ($user->hasRole('admin'));
+        });
+
+        Gate::define('manage-post', function($user, $post) {
+            return ($user->hasRole('admin') || ($user->id == $post->user_id)); //$user->isOwner($post)
         });
     }
 }

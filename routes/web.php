@@ -11,17 +11,16 @@
 |
 */
 
-use App\Post;
-
-Route::get('/', function () {
-    //TODO: move to conroller
-    $posts = Post::orderBy('published_date', 'desc')->paginate(12);
-    return view('welcome', compact('posts'));
-})->name('welcome');
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'PostsController@index')->name('welcome');
+Route::get('home', 'HomeController@index')->name('home');
+
+Route::resource('posts', 'PostsController');
+
+Route::get('dashboard/posts', ['as' => 'posts.dashboard', 'uses' => 'PostsController@dashboard']);
+
+Route::get('posts/tags/{tag}', 'TagController@index')->name('tags');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'UserController', ['except' => ['show']])->middleware('can:manage-users');

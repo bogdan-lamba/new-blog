@@ -109,10 +109,15 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-th-large text-blue"></i> {{ __('Posts') }}
+                    <a class="nav-link" href="{{ route('posts.dashboard') }}">
+                        <i class="fas fa-th-large text-blue"></i> {{ __('Posts Dashboard') }}
                     </a>
                 </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('posts.index') }}">
+                            <i class="fas fa-th-large text-blue"></i> {{ __('Posts Blog') }}
+                        </a>
+                    </li>
             </ul>
             <!-- Divider -->
             <hr class="my-3">

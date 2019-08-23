@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => __('Add post')])
+@extends('layouts.app', ['title' => __('Edit post')])
 
 @section('content')
     <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
@@ -10,7 +10,7 @@
                     <div class="card-header bg-white border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">{{ __('Add post') }}</h3>
+                                <h3 class="mb-0">{{ __('Edit post') }} {{ $post->id }}</h3>
                             </div>
                             <div class="col-4 text-right">
                                 <a href="{{ route('posts.dashboard') }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
@@ -19,16 +19,15 @@
                     </div>
 
                     <div class="card-body">
-                        <h6 class="heading-small text-muted mb-4">{{ __('New Post Information') }}</h6>
+                        <h6 class="heading-small text-muted mb-4">{{ __('Post Information') }}</h6>
                         <form
                             method="POST"
-                            action="{{ route('posts.store') }}"
+                            action="{{ route('posts.edit', $post) }}"
                             autocomplete="off"
                             enctype="multipart/form-data">
+                            @method('PATCH')
 
-                            @include ('posts.form', [
-                                'post' => new App\Post,
-                            ])
+                    @include ('posts.form')
                         </form>
                     </div>
                 </div>

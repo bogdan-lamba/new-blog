@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class PostsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('published_date', 'desc')->where('status', 'published')->paginate(12);
+        return view('posts.index', compact('posts'));
+    }
+
+    public function dashboard()
+    {
+        //filter for admin and user
+        $posts = Post::orderBy('published_date', 'desc')->paginate(12);
+        return view('posts.dashboard', compact('posts'));
     }
 
     /**
@@ -24,7 +38,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -46,7 +60,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -57,7 +71,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
