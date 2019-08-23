@@ -26,5 +26,7 @@ class UsersTableSeeder extends Seeder
 
         $avatar = new LetterAvatar('Admin Admin', 'circle', '40');
         $avatar->saveAs('storage/app/public/' . '1' . '.png', LetterAvatar::MIME_TYPE_PNG);
+
+        Artisan::call('storage:link', [] );
     }
 }

@@ -23,7 +23,7 @@
                         <form
                             method="POST"
                             action="{{ route('posts.store') }}"
-                            autocomplete="off"
+                            autocomplete="on"
                             enctype="multipart/form-data">
 
                             @include ('posts.form', [

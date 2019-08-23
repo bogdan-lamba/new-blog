@@ -23,7 +23,7 @@
                         <form
                             method="POST"
                             action="{{ route('posts.edit', $post) }}"
-                            autocomplete="off"
+                            autocomplete="on"
                             enctype="multipart/form-data">
                             @method('PATCH')
 
