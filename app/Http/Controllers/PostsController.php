@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -26,8 +27,12 @@ class PostsController extends Controller
 
     public function dashboard()
     {
-        //filter for admin and user
-        $posts = Post::orderBy('published_date', 'desc')->paginate(12);
+        if (Gate::allows('manage-posts')) {
+            $posts = Post::orderBy('published_date', 'desc')->paginate(12);
+        } else {
+            $posts = Post::orderBy('published_date', 'desc')->where('user_id', auth()->user()->id)->paginate(12);
+        }
+
         return view('posts.dashboard', compact('posts'));
     }
 

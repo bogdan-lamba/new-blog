@@ -36,42 +36,43 @@
                                 <th scope="col">{{ __('Title') }}</th>
                                 <th scope="col">{{ __('Published') }}</th>
                                 <th scope="col">{{ __('Author') }}</th>
+                                <th scope="col">{{ __('Status') }}</th>
                                 <th scope="col">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($posts as $post)
+                            @forelse ($posts as $post)
                                 <tr>
-                                    <td><img src=""> {{ $post->title }}</td>
-                                    <td>
-                                        {{ $post->published_date }}
-                                    </td>
+                                    <td>{{ $post->title }}</td>
+                                    <td>{{ $post->published_date }}</td>
                                     <td>{{ $post->owner() }}</td>
+                                    <td>{{ $post->status }}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                @can ('manage-post', $post)
-                                                    <form action="{{ route('posts.destroy', $post) }}" method="post">
-                                                        @csrf
-                                                        @method('delete')
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                        <form action="{{ route('posts.destroy', $post) }}" method="post">
+                                                            @csrf
+                                                            @method('delete')
 
-                                                        <a class="dropdown-item" href="{{ route('posts.edit', $post) }}">{{ __('Edit')
-                                                        }}</a>
-                                                        <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you
-                                                        sure you want to delete this post?") }}') ? this.parentElement.submit() : ''">
-                                                            {{ __('Delete') }}
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                @endif
-                                            </div>
+                                                            <a class="dropdown-item" href="{{ route('posts.edit', $post) }}">{{ __('Edit')
+                                                            }}</a>
+
+                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this post?") }}') ? this.parentElement.submit() :''">
+                                                                {{ __('Delete') }}
+                                                            </button>
+                                                        </form>
+                                                </div>
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                                @empty
+                                <tr>
+                                    <td>You have no posts</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
