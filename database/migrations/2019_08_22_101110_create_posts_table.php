@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('image_id')->nullable();//temp
+            $table->unsignedBigInteger('image_id')->nullable();
             $table->string('title');
             $table->text('content');
             $table->string('status')->default('published');
@@ -26,7 +26,7 @@ class CreatePostsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('image_id')->references('id')->on('images')->onDelete('set null');
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
 
         });
     }

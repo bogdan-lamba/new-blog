@@ -1,5 +1,5 @@
 @if ($errors->has($input))
-    <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first($input) }}</strong>
-            </span>
+    <span class="text-red" role="alert">
+        <strong>{{ $errors->first($input) }}</strong>
+    </span>
 @endif

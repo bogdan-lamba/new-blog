@@ -10,9 +10,7 @@
 
                         <h3>{{ $post->title }}</h3>
                         <h4>Author: {{ $post->owner() }} published on {{ $post->published_date }}</h4>
-                        <img class="card-img-top " src="{{ asset('argon/img/theme/team-3-800x800.jpg') }}"
-                             alt="Card image
-                        cap">
+                        <img class="card-img-top " src="{{ $post->imagePath() }}" alt="Card image cap">
 
                     </div>
                     <div class="card-body">

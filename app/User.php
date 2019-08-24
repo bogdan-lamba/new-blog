@@ -70,7 +70,7 @@ class User extends Authenticatable
     {
         $this->deleteAvatar();
         $avatar = new LetterAvatar($this->name, 'circle', '40');
-        $avatar->saveAs('storage/' . $this->id . '.png', LetterAvatar::MIME_TYPE_PNG);
+        $avatar->saveAs(storage_path('/app/public/' . $this->id . '.png'), LetterAvatar::MIME_TYPE_PNG);
     }
 
     public function deleteAvatar()

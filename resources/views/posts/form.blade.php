@@ -9,7 +9,8 @@
             name="title"
             id="input-title"
             class="form-control form-control-alternative{{$errors->has('title') ? ' is-invalid' : '' }}"
-            placeholder="{{ __('Title') }}" value="{{ $post->title }}"
+            placeholder="{{ __('Title') }}"
+            value="{{ old('title') ?? $post->title }}"
             autofocus>
 
         @include ('posts.errors', ['input' => 'title'])
@@ -22,9 +23,8 @@
             rows="5"
             id="input-content"
             class="form-control form-control-alternative{{$errors->has('content') ? ' is-invalid' : '' }}"
-            autofocus>
-            {{ $post->content ?? 'Content' }}
-        </textarea>
+            placeholder="Content"
+            autofocus>{{ old('content') ?? $post->content }}</textarea>
 
         @include ('posts.errors', ['input' => 'content'])
     </div>
@@ -40,7 +40,7 @@
                 <option value="">Select Category</option>
             @foreach (\App\Category::all() as $category)
                 <option value="{{ $category->id }}"
-                    @if ($category->id == $post->category_id)
+                    @if ($category->id == $post->category_id || $category->id == old('category'))
                         selected
                     @endif
                 >{{ $category->name }}</option>
@@ -57,14 +57,15 @@
                 <div class="custom-control custom-control-alternative custom-checkbox ml-3">
                     <input
                         type="checkbox"
-                        name="{{ $tag->name }}"
+                        name="tags[]"
                         id="{{ $tag->name }}"
-                        class="custom-control-input"
+                        class=" custom-control-input"
                         value="{{ $tag->id }}"
-                    @if ($post->tags->contains($tag))
+                    @if ($post->tags->contains($tag) || (old('tags') && in_array($tag->id, old('tags'))))
                         checked
                         @endif
                     >
+
                     <label class="custom-control-label" for="{{ $tag->name }}">{{ $tag->name }}</label>
                 </div>
             @endforeach
@@ -84,7 +85,7 @@
                 name="published_date"
                 id="published"
                 class="form-control datepicker"
-                value="{{ $post->published_date ?? now() }}">
+                value="{{ old('published_date') ?? $post->published_date }}">
         </div>
 
         @include ('posts.errors', ['input' => 'published_date'])
@@ -101,15 +102,21 @@
         @include ('posts.errors', ['input' => 'image'])
     </div>
 
+    @if ($post->image_id)
+        <img src="{{$post->imagePath() }}">
+    @endif
+
+    {{--TODO: disable submit on enter--}}
     <div class="row">
         <div class="text-center">
             <a href="{{ route('posts.dashboard') }}" class="btn btn-outline-success mt-4 mr-3">{{ __('Cancel') }}</a>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success mt-4 mr-3" >{{ __('Save as draft') }}</button>
+            <button type="submit" name="status" value="draft" class="btn btn-success mt-4 mr-3" >{{ __('Save as draft') }}</button>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success mt-4 mr-3">{{ __('Publish') }}</button>
+            <button type="submit" name="status" value="published" class="btn btn-success mt-4 mr-3">{{ __('Publish') }}</button>
         </div>
     </div>
+    @include ('posts.errors', ['input' => 'status'])
 </div>

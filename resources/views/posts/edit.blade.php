@@ -22,7 +22,7 @@
                         <h6 class="heading-small text-muted mb-4">{{ __('Post Information') }}</h6>
                         <form
                             method="POST"
-                            action="{{ route('posts.edit', $post) }}"
+                            action="{{ route('posts.update', $post) }}"
                             autocomplete="on"
                             enctype="multipart/form-data">
                             @method('PATCH')
