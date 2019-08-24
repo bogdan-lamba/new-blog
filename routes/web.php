@@ -22,6 +22,8 @@ Route::get('dashboard/posts', ['as' => 'posts.dashboard', 'uses' => 'PostsContro
 
 Route::get('posts/tags/{tag}', 'TagController@index')->name('tags');
 
+Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
+
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'UserController', ['except' => ['show']])->middleware('can:manage-users');
     Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);

@@ -1,4 +1,5 @@
 <nav class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
+
     <div class="container px-4">
         <a class="navbar-brand" href="{{ route('welcome') }}">
             <img src="{{ asset('logo.svg') }}" />
@@ -25,6 +26,7 @@
             </div>
             <!-- Navbar items -->
             <ul class="navbar-nav ml-auto">
+                @include ('layouts.search')
                 <li class="nav-item">
                     <a class="nav-link nav-link-icon" href="{{ route('register') }}">
                         <i class="ni ni-circle-08"></i>

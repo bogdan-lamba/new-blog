@@ -14,7 +14,7 @@ class PostsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show', 'search']);
     }
 
     /**
@@ -27,6 +27,19 @@ class PostsController extends Controller
         $posts = Post::orderBy('published_date', 'desc')
             ->where('status', 'published')
             /*->where('published_date', '<', now())*/
+            ->paginate(12);
+
+        return view('posts.index', compact('posts'));
+    }
+
+    public function search()
+    {
+        $posts = Post::join('users', 'posts.user_id', '=', 'users.id')
+            ->orderBy('published_date', 'desc')
+            ->where('status', 'published')
+            ->where('title', 'LIKE', '%' . request('search') . '%')
+            ->orWhere('content', 'LIKE', '%' . request('search') . '%')
+            ->orWhere('name', 'LIKE', '%' . request('search') . '%')
             ->paginate(12);
 
         return view('posts.index', compact('posts'));
@@ -176,7 +189,7 @@ class PostsController extends Controller
             'tags' => 'required|array|min:2',
             'tags.*' => 'required|exists:tags,id',
             'published_date' => 'required|date',
-            'image' => Rule::requiredIf(!$image) .  '|image|mimes:jpeg,jpg,png|max:4096‬',
+            'image' => Rule::requiredIf(!$image) . '|image|mimes:jpeg,jpg,png|max:4096‬',
             'status' => 'required'
         ]);
     }

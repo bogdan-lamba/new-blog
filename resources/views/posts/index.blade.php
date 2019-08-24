@@ -9,6 +9,8 @@
                     <div class="col-lg-5 col-md-6">
                         @if (Route::is('tags'))
                             <h1 class="text-white">{{ __('Showing posts with tag: ') }}<i>{{ $tag->name }}</i></h1>
+                        @elseif (Route::is('posts.search'))
+                            <h1 class="text-white">{{ __('Showing results for: ') }}<i>{{ request('search') }}</i></h1>
                         @else
                             <h1 class="text-white">{{ __('Showing all posts') }}</h1>
                         @endif
@@ -21,7 +23,7 @@
                         @include ('posts.card')
                     </div>
                 @empty
-                    <h2 class="text-white">No Posts yet.</h2>
+                    <h2 class="text-white">No Posts found.</h2>
                 @endforelse
             </div>
             @if (!Route::is('tags'))
