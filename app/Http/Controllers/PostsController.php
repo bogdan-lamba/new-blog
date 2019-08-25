@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Image;
+use App\Notifications\NewPostNotification;
 use App\Post;
+use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -79,6 +82,13 @@ class PostsController extends Controller
     {
         $this->validateRequest();
 
+        //only admins can save the post as published, publishers send notification
+        if (Gate::allows('manage-posts') ) {
+            $status = request('status');
+        } else {
+            $status = 'draft';
+        }
+
         $image = Image::firstOrCreate(
             ['name' => request('image')->getClientOriginalName()]
         );
@@ -89,7 +99,7 @@ class PostsController extends Controller
             'category_id' => request('category'),
             'image_id' => $image->id,
             'published_date' => Carbon::parse(request('published_date'))->format('Y-m-d'),
-            'status' => request('status')
+            'status' => $status
         ]);
 
         $post->addTags(request('tags'));
@@ -98,7 +108,16 @@ class PostsController extends Controller
 
         $image->save();
 
-        return redirect(route('posts.dashboard'))->withStatus(__('Post successfully created.'));
+        $message = 'Post saved as ' . $status;
+
+        if (Gate::denies('manage-posts') && request('status')!='draft') {
+            foreach (User::where('role_id', 1)->get() as $admin) {
+                $admin->notify((new NewPostNotification($post))->delay(5));
+            }
+            $message = 'Post sent for review.';
+        }
+
+        return redirect(route('posts.dashboard'))->withStatus(__($message));
     }
 
     /**
@@ -160,7 +179,16 @@ class PostsController extends Controller
 
         $post->updateTags(request('tags'));
 
-        return redirect(route('posts.dashboard'))->withStatus(__('Post successfully modified.'));
+        $message = 'Post successfully modified.';
+
+        if (Gate::denies('manage-posts') && request('status')!='draft') {
+            foreach (User::where('role_id', 1)->get() as $admin) {
+                $admin->notify((new NewPostNotification($post))->delay(5));
+            }
+            $message = 'Post sent for review.';
+        }
+
+        return redirect(route('posts.dashboard'))->withStatus(__($message));
 
     }
 
@@ -178,6 +206,16 @@ class PostsController extends Controller
         //TODO: maybe delete image from storage if its the last post with that image
 
         return redirect()->route('posts.dashboard')->withStatus(__('Post successfully deleted.'));
+    }
+
+    public function publish(Post $post)
+    {
+        if (Gate::denies('manage-posts'))
+            abort(403, 'You need to be logged in as admin in order to approve posts.');
+
+        $post->publish();
+
+        return redirect()->route('posts.dashboard')->withStatus(__('Post ' . $post->id . ' was published.'));
     }
 
     protected function validateRequest($image = null)
