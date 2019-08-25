@@ -24,15 +24,23 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $exchange = $this->exchangeApi('RON');
+
+        if (Gate::allows('see-dashboard'))
+            return view('dashboard', compact('exchange'));
+
+        return view('profile.edit');
+    }
+
+    public function exchangeApi($currency)
+    {
         $client = new Client();
         $response = $client->request('GET', 'https://api.exchangeratesapi.io/latest');
         $exchange = json_decode($response->getBody());
-        $eur_ron = $exchange->rates->RON;
-        $exc_date = $exchange->date;
 
-        if(Gate::allows('see-dashboard'))
-            return view('dashboard', compact('eur_ron', 'exc_date'));
-
-        return view('profile.edit');
+        return [
+            'currency' => $exchange->rates->$currency,
+            'date' => $exchange->date
+        ];
     }
 }
