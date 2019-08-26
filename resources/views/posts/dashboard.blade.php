@@ -43,7 +43,7 @@
                             <tbody>
                             @forelse ($posts as $post)
                                 <tr>
-                                    <td>{{ $post->title }}</td>
+                                    <td><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></td>
                                     <td>{{ $post->published_date }}</td>
                                     <td>{{ $post->owner() }}</td>
                                     <td>{{ $post->status }}</td>

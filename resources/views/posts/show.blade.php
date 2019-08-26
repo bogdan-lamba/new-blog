@@ -10,7 +10,9 @@
                         @can ('manage-post', $post)
                             <div class="mb-3">
                                 @can ('manage-posts')
-                                    <a href="{{ route('posts.publish', $post) }}" class="btn btn-success btn-sm">Approve</a>
+                                        @if ($post->status != 'published')
+                                        <a href="{{ route('posts.publish', $post) }}" class="btn btn-success btn-sm">Approve</a>
+                                        @endif
                                     @endcan
                                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-info btn-sm">Edit</a>
                                 <a href="{{ route('posts.destroy', $post) }}" class="btn btn-danger btn-sm">Delete</a>
